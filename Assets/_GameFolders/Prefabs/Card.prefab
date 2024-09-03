@@ -88,3 +88,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fe193d956eb2494b97d06b6a5df8bd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cardName: 0
+  _dummySprite: {fileID: 21300000, guid: 128b9c256eac04da99f072fdc0c7b8ab, type: 3}
+  _cardFace: []

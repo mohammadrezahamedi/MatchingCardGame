@@ -5,25 +5,27 @@ using UnityEngine;
 
 public class SpawnCards : MonoBehaviour
 {
-    [SerializeField] private GameObject _card;
+    [SerializeField] private Card _cardPrefab;
     [SerializeField] private Transform _container;
-    private void OnEnable()
-    {
-        UIManager.OnSpawnCard += SpawnCard;
-    }
-    private void OnDisable()
-    {
-        UIManager.OnSpawnCard -= SpawnCard;
+    [SerializeField] private Level _level;
 
+    private void Awake()
+    {
+        SpawnAllCards();
     }
 
-    private void SpawnCard(int columnQty)
+    private void SpawnAllCards()
     {
-        int grid = columnQty * columnQty;
-        for (int i = 0; i < grid; i++)
+        for (int row = 0; row < _level.CardColumnQty; row++)
         {
-            GameObject card = Instantiate(_card, _container);
-            card.name = "Card " + i;
+            for (int col = 0; col < _level.CardRowQty; col++)
+            {
+
+                Card card = Instantiate(_cardPrefab, _container);
+                card.name = "Card " + (row * _level.CardColumnQty + col);
+
+              //  card.SetCardName();
+            }
         }
     }
 }

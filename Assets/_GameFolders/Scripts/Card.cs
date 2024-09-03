@@ -1,20 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Card : MonoBehaviour
 {
     [SerializeField] private CardName _cardName;
-
-    void Start()
+    [SerializeField] private Sprite _dummySprite;
+    [SerializeField] private Sprite[] _cardFace;
+    private Image _image;
+  
+    private void Start()
     {
-        
+        _image = GetComponent<Image>();
+        _image.sprite = _dummySprite;
     }
 
-    void Update()
-    {
-
-    }
 }
 
 public enum CardName
