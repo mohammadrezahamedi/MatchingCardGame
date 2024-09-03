@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 2599571839158678200}
   - component: {fileID: 6367834325558110211}
   - component: {fileID: 793587593915497692}
+  - component: {fileID: -1484991001514245874}
   m_Layer: 5
-  m_Name: DummyCard
+  m_Name: Card
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,3 +76,15 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &-1484991001514245874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4412827632466226914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fe193d956eb2494b97d06b6a5df8bd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
