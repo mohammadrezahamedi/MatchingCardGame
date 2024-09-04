@@ -562,7 +562,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 339623735d7b0ce4cb964736c3cacbd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _flipBackDelay: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1435,7 +1434,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -19.110992, y: 20.450409}
+  m_AnchoredPosition: {x: -19.111023, y: 20.450378}
   m_SizeDelta: {x: 38.222, y: 66.1205}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1065357564
@@ -1525,6 +1524,7 @@ MonoBehaviour:
   _totalScoreTxt: {fileID: 1662904219}
   _resetButton: {fileID: 780719304}
   _gameOverPanel: {fileID: 1065357562}
+  _turnTxt: {fileID: 42323636}
 --- !u!1 &1231797006
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,8 +11,6 @@ public class GameManager : MonoBehaviour
     private int _matchedPairs = 0;
     private int _totalPairs;
 
-    [SerializeField] private float _flipBackDelay;
-
     public static Action<int> OnCardMatched;
     public static Action OnCardMatchedSuccess;
     public static Action OnGameCompleted;

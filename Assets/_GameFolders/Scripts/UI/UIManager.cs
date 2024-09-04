@@ -21,8 +21,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text _turnTxt;
     private int _turnCounter;
 
-
     public static Action<int> OnResetGame;
+
+
     private void Awake()
     {
         _gameOverPanel.SetActive(false);
@@ -31,20 +32,36 @@ public class UIManager : MonoBehaviour
     private void OnEnable()
     {
         GameManager.OnCardMatchedSuccess += UpdateScore;
-      //  GameManager.OnCardsMismatch += UpdateTurn;
+        GameManager.OnCardsMismatch += UpdateTurnTxt;
         GameManager.OnGameCompleted += ShowGameOver;
     }
-
     private void OnDisable()
     {
         GameManager.OnCardMatchedSuccess -= UpdateScore;
+        GameManager.OnCardsMismatch -= UpdateTurnTxt;
         GameManager.OnGameCompleted -= ShowGameOver;
     }
+    
+    
+    private void UpdateTurnTxt()
+    {
+        _turnTxt.text ="Turn: "+ _turnCounter.ToString();
+    }
+    private void UpdateTurnTxt(int arg1, int arg2)
+    {
+        _turnCounter++;
+        UpdateTurnTxt();
+    }
+
+
 
     private void UpdateScore()
     {
-        _totalScore += 10;
+        _turnCounter++;
+        _totalScore += 1;
         _scoreText.text = "Score: " + _totalScore;
+        UpdateTurnTxt();
+
     }
 
     private void ShowGameOver()
