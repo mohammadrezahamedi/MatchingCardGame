@@ -92,7 +92,7 @@ public enum CardName
     DIAMONDACE,
     HEARTJACK,
     HEARTACE,
-    JOKER,
     SPADEACE,
     SPADEJACK,
+    JOKER,
 }

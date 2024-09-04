@@ -18,23 +18,30 @@ public class SpawnCards : MonoBehaviour
     {
         _cardFace = Resources.LoadAll<Sprite>("Cards");
 
-        _cardPickNumber = (_level.Row * _level.Column) / 2;
+        int totalCards = _level.Row * _level.Column;
+        _cardPickNumber = totalCards / 2;
 
-        _shuffledCardIndices = CreateAndShuffleCards();
+        _shuffledCardIndices = CreateAndShuffleCards(totalCards);
 
         SpawnAllCards();
     }
 
-    private List<int> CreateAndShuffleCards()
+    private List<int> CreateAndShuffleCards(int totalCards)
     {
         List<int> cardIndices = new List<int>();
 
         for (int i = 0; i < _cardPickNumber; i++)
         {
-            cardIndices.Add(i);  
-            cardIndices.Add(i); 
+            cardIndices.Add(i);
+            cardIndices.Add(i);
         }
 
+        if (totalCards % 2 != 0)
+        {
+            cardIndices.Add(_cardFace.Length - 1); // Joker is assumed to be the last sprite
+        }
+
+        // Shuffle the list using Fisher-Yates shuffle
         for (int i = cardIndices.Count - 1; i > 0; i--)
         {
             int randomIndex = UnityEngine.Random.Range(0, i + 1);
@@ -61,7 +68,7 @@ public class SpawnCards : MonoBehaviour
                 card.name = "Card " + cardIndex;
 
                 int cardTypeIndex = _shuffledCardIndices[index];
-                card.SetCardName((CardName)cardTypeIndex, cardIndex,_cardFace[cardTypeIndex]);
+                card.SetCardName((CardName)cardTypeIndex, cardIndex, _cardFace[cardTypeIndex]);
                 index++;
             }
         }
