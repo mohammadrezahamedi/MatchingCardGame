@@ -6,22 +6,23 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     private int _facedOffCard = 0;
-    private CardName previousCardType;
-    private int previousCardIndex;
-    private int score = 0;
-    private int matchedPairs = 0;
-    private int totalPairs;
+    private CardName _previousCardType;
+    private int _previousCardIndex;
+    private int _matchedPairs = 0;
+    private int _totalPairs;
 
-    [SerializeField] private float flipBackDelay;
+    [SerializeField] private float _flipBackDelay;
 
     public static Action<int> OnCardMatched;
     public static Action OnCardMatchedSuccess;
     public static Action OnGameCompleted;
     public static Action<int, int> OnCardsMismatch;
     private bool _cardIsDisplaying;
+
     private void OnEnable()
     {
         Card.OnCardSelected += CardSelected;
+        UIManager.OnResetGame+= Restart;
     }
 
     private void OnDisable()
@@ -31,7 +32,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        totalPairs = (FindObjectsOfType<Card>().Length) / 2;
+        _totalPairs = (FindObjectsOfType<Card>().Length) / 2;
     }
 
     private void CardSelected(CardName cardType, int cardIndex)
@@ -42,36 +43,42 @@ public class GameManager : MonoBehaviour
         }
         _facedOffCard++;
 
+
+
         if (_facedOffCard == 1)
         {
-            previousCardType = cardType;
-            previousCardIndex = cardIndex;
+            _previousCardType = cardType;
+            _previousCardIndex = cardIndex;
         }
         else
         {
-            if (previousCardType == cardType && previousCardIndex != cardIndex)
+            if (_previousCardType == cardType && _previousCardIndex != cardIndex)
             {
-                score += 10;
                 OnCardMatchedSuccess?.Invoke();
 
-                matchedPairs++;
+                _matchedPairs++;
 
-                if (matchedPairs >= totalPairs)
+                if (_matchedPairs >= _totalPairs)
                 {
                     OnGameCompleted?.Invoke();
                 }
                 OnCardMatched?.Invoke(cardIndex);
-                OnCardMatched?.Invoke(previousCardIndex);
+                OnCardMatched?.Invoke(_previousCardIndex);
             }
             else
             {
-                OnCardsMismatch.Invoke(cardIndex, previousCardIndex);
+                OnCardsMismatch.Invoke(cardIndex, _previousCardIndex);
+
             }
 
             _facedOffCard = 0;
         }
     }
 
+    public void Restart(int score)
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 
 
 

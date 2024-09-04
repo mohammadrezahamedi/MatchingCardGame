@@ -9,31 +9,36 @@ public class AudioManager : MonoBehaviour
     [SerializeField] public AudioClip _successClip;
     [SerializeField] public AudioClip _gameEndClip;
     [SerializeField] public AudioClip _mismatchClip;
+    [SerializeField] public AudioClip _cardFlippingClip;
 
     private void OnEnable()
     {
-        GameManager.OnCardMatchedSuccess += MatchedSoundEffect;
-        GameManager.OnCardsMismatch += MismatchedSoundEffect;
-        GameManager.OnGameCompleted += GameOverSoundEffect;
+        GameManager.OnCardMatchedSuccess += MatchedSfx;
+        GameManager.OnCardsMismatch += MismatchedSfx;
+        GameManager.OnGameCompleted += GameOverSfx;
     }
 
     private void OnDisable()
     {
-        GameManager.OnCardMatchedSuccess -= MatchedSoundEffect;
-        GameManager.OnGameCompleted -= GameOverSoundEffect;
-        GameManager.OnCardsMismatch -= MismatchedSoundEffect;
+        GameManager.OnCardMatchedSuccess -= MatchedSfx;
+        GameManager.OnGameCompleted -= GameOverSfx;
+        GameManager.OnCardsMismatch -= MismatchedSfx;
     }
 
-    private void GameOverSoundEffect()
+    private void GameOverSfx()
     {
         _audio.PlayOneShot(_gameEndClip);
     }
-    private void MatchedSoundEffect()
+    private void MatchedSfx()
     {
         _audio.PlayOneShot(_successClip);
     }
-    private void MismatchedSoundEffect(int a,int b)
+    private void MismatchedSfx(int a,int b)
     {
         _audio.PlayOneShot(_mismatchClip);
+    }
+    private void CardFlippingSFX()
+    {
+        _audio.PlayOneShot(_cardFlippingClip);
     }
 }
