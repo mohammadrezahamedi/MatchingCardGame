@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,10 +15,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float flipBackDelay;
 
     public static Action<int> OnCardMatched;
-    public static Action<int> OnScoreUpdated;
+    public static Action OnCardMatchedSuccess;
     public static Action OnGameCompleted;
     public static Action<int, int> OnCardsMismatch;
-    private bool _isDisplaying;
+    private bool _cardIsDisplaying;
     private void OnEnable()
     {
         Card.OnCardSelected += CardSelected;
@@ -35,7 +36,7 @@ public class GameManager : MonoBehaviour
 
     private void CardSelected(CardName cardType, int cardIndex)
     {
-        if (_isDisplaying)
+        if (_cardIsDisplaying)
         {
             return;
         }
@@ -51,7 +52,7 @@ public class GameManager : MonoBehaviour
             if (previousCardType == cardType && previousCardIndex != cardIndex)
             {
                 score += 10;
-                OnScoreUpdated?.Invoke(score);
+                OnCardMatchedSuccess?.Invoke();
 
                 matchedPairs++;
 
@@ -75,18 +76,21 @@ public class GameManager : MonoBehaviour
     {
         if (matched)
         {
-            yield return new WaitForSeconds(flipBackDelay);
+           // yield return new WaitForSeconds(flipBackDelay);
 
             OnCardMatched?.Invoke(cardIndex1);
             OnCardMatched?.Invoke(cardIndex2);
         }
         else
         {
-            _isDisplaying = true;
+            _cardIsDisplaying = true;
             yield return new WaitForSeconds(flipBackDelay);
             OnCardsMismatch?.Invoke(cardIndex1, cardIndex2);
-            _isDisplaying = false;
+            _cardIsDisplaying = false;
 
         }
     }
+
+
+
 }

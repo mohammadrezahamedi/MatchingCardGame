@@ -1,7 +1,7 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-
 
 public class Card : MonoBehaviour
 {
@@ -51,7 +51,7 @@ public class Card : MonoBehaviour
     {
         if (_cardIndex == index)
         {
-            Destroy(gameObject);
+            StartCoroutine(DisappearCard());
         }
     }
 
@@ -61,6 +61,25 @@ public class Card : MonoBehaviour
         {
             _image.sprite = _backSprite;
         }
+    }
+
+    private IEnumerator DisappearCard()
+    {
+        for (float alpha = 1f; alpha >= 0f; alpha -= 0.1f)
+        {
+            SetImageAlpha(alpha);
+            yield return new WaitForSeconds(0.05f); 
+        }
+
+        _image.enabled = false;
+        _cardButton.enabled = false;
+    }
+
+    private void SetImageAlpha(float alpha)
+    {
+        Color color = _image.color;
+        color.a = alpha;
+        _image.color = color;
     }
 }
 

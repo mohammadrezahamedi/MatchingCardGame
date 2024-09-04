@@ -1,30 +1,53 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private Text scoreText;
-    [SerializeField] private GameObject gameOverPanel; 
 
+    [Header("Score")]
+    [SerializeField] private TMP_Text _scoreText;
+    private int _totalScore;
+
+
+    [Header("Game Over")]
+    [SerializeField] private TMP_Text _totalScoreTxt;
+    [SerializeField] private Button _resetButton;
+    [SerializeField] private GameObject _gameOverPanel;
+
+
+    private void Awake()
+    {
+        _gameOverPanel.SetActive(false);
+        _resetButton.onClick.AddListener(Restart);
+    }
     private void OnEnable()
     {
-        GameManager.OnScoreUpdated += UpdateScore;
+        GameManager.OnCardMatchedSuccess += UpdateScore;
         GameManager.OnGameCompleted += ShowGameOver;
     }
 
     private void OnDisable()
     {
-        GameManager.OnScoreUpdated -= UpdateScore;
+        GameManager.OnCardMatchedSuccess -= UpdateScore;
         GameManager.OnGameCompleted -= ShowGameOver;
     }
 
-    private void UpdateScore(int newScore)
+    private void UpdateScore()
     {
-        scoreText.text = "Score: " + newScore;
+        _totalScore += 10;
+        _scoreText.text = "Score: " + _totalScore;
     }
 
     private void ShowGameOver()
     {
-       //TODO: GameOverPanel
+        _gameOverPanel.SetActive(true);
+        _totalScoreTxt.text= "Total Score: " + _totalScore;
     }
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
 }
