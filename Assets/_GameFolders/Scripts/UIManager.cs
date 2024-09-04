@@ -1,12 +1,30 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private int _gridColumnSize;
-    [SerializeField] private GridLayoutGroup _grid;
+    [SerializeField] private Text scoreText;
+    [SerializeField] private GameObject gameOverPanel; 
 
+    private void OnEnable()
+    {
+        GameManager.OnScoreUpdated += UpdateScore;
+        GameManager.OnGameCompleted += ShowGameOver;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.OnScoreUpdated -= UpdateScore;
+        GameManager.OnGameCompleted -= ShowGameOver;
+    }
+
+    private void UpdateScore(int newScore)
+    {
+        scoreText.text = "Score: " + newScore;
+    }
+
+    private void ShowGameOver()
+    {
+       //TODO: GameOverPanel
+    }
 }
