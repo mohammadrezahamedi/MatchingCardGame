@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0fb03bf11b7a404c8d7186e6fb17bf6, type: 3}
   m_Name: Level 1
   m_EditorClassIdentifier: 
-  Column: 6
-  Row: 6
+  Column: 4
+  Row: 4
   FlipDelayTime: 0.15
   DisappearCardTime: 0.07
