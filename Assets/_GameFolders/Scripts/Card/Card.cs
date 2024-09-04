@@ -59,30 +59,30 @@ public class Card : MonoBehaviour
     {
         if (_cardIndex == cardIndex1 || _cardIndex == cardIndex2)
         {
-            _image.sprite = _backSprite;
+            StartCoroutine(FlipCardsBack());
         }
     }
 
+
+    private IEnumerator FlipCardsBack()
+    {
+        yield return new WaitForSeconds(0.15f);
+        _image.sprite = _backSprite;
+    }
     private IEnumerator DisappearCard()
     {
         for (float alpha = 1f; alpha >= 0f; alpha -= 0.1f)
         {
-            SetImageAlpha(alpha);
-            yield return new WaitForSeconds(0.05f); 
+            Color color = _image.color;
+            color.a = alpha;
+            _image.color = color;
+            yield return new WaitForSeconds(0.07f);
         }
-
         _image.enabled = false;
         _cardButton.enabled = false;
     }
 
-    private void SetImageAlpha(float alpha)
-    {
-        Color color = _image.color;
-        color.a = alpha;
-        _image.color = color;
-    }
 }
-
 
 public enum CardName
 {

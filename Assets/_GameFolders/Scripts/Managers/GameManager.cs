@@ -60,36 +60,19 @@ public class GameManager : MonoBehaviour
                 {
                     OnGameCompleted?.Invoke();
                 }
-
-                StartCoroutine(FlipCardsBack(cardIndex, previousCardIndex, true));
+                OnCardMatched?.Invoke(cardIndex);
+                OnCardMatched?.Invoke(previousCardIndex);
             }
             else
             {
-                StartCoroutine(FlipCardsBack(cardIndex, previousCardIndex, false));
+                OnCardsMismatch.Invoke(cardIndex, previousCardIndex);
             }
 
             _facedOffCard = 0;
         }
     }
 
-    private IEnumerator FlipCardsBack(int cardIndex1, int cardIndex2, bool matched)
-    {
-        if (matched)
-        {
-           // yield return new WaitForSeconds(flipBackDelay);
 
-            OnCardMatched?.Invoke(cardIndex1);
-            OnCardMatched?.Invoke(cardIndex2);
-        }
-        else
-        {
-            _cardIsDisplaying = true;
-            yield return new WaitForSeconds(flipBackDelay);
-            OnCardsMismatch?.Invoke(cardIndex1, cardIndex2);
-            _cardIsDisplaying = false;
-
-        }
-    }
 
 
 
