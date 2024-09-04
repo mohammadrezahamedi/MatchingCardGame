@@ -7,4 +7,6 @@ public class Level : ScriptableObject
 {
     public int Column; 
     public int Row;    
+    public float FlipDelayTime;
+    public float DisappearCardTime;
 }

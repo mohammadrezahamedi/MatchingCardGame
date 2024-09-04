@@ -3,105 +3,115 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using Zenject;
 
-
-public class SaveManager : MonoBehaviour
+namespace MatchingCards
 {
-    private const string FileName = "game_data.json";
-    private GameData gameData;
-
-    private void OnEnable()
+    public class SaveManager : MonoBehaviour
     {
-        UIManager.OnResetGame += SaveScore;
-        LoadScore(); 
-    }
+        private const string FileName = "game_data.json";
+        private GameData gameData;
+        private UIManager _uIManager;
 
-    private void OnDisable()
-    {
-        UIManager.OnResetGame -= SaveScore;
-    }
-
-    private string GetFilePath()
-    {
-        return Path.Combine(Application.persistentDataPath, FileName);
-    }
-
-    private void SaveScore(int totalScore)
-    {
-        string currentLevelID = GetCurrentLevelID();
-
-        if (gameData == null)
+        [Inject]
+        public void Constructor(UIManager uiManager)
         {
-            gameData = new GameData();
+            _uIManager = uiManager;
         }
 
-        // Update current score
-        gameData.currentScore = totalScore;
-
-        if (gameData.highestScores.ContainsKey(currentLevelID))
+        private void Awake()
         {
-            if (totalScore > gameData.highestScores[currentLevelID])
+            LoadScore();
+        }
+
+     
+        private string GetFilePath()
+        {
+            return Path.Combine(Application.persistentDataPath, FileName);
+        }
+
+        public void SaveScore(int totalScore)
+        {
+            string currentLevelID = GetCurrentLevelID();
+
+            if (gameData == null)
             {
-                gameData.highestScores[currentLevelID] = totalScore;
-                Debug.Log("New highest score for level " + currentLevelID + ": " + totalScore);
+                gameData = new GameData();
             }
-        }
-        else
-        {
-            gameData.highestScores[currentLevelID] = totalScore;
-            Debug.Log("Setting highest score for level " + currentLevelID + ": " + totalScore);
-        }
 
-        string json = JsonUtility.ToJson(gameData, true);
-        File.WriteAllText(GetFilePath(), json);
+            gameData.currentScore = totalScore;
 
-        Debug.Log("Game data saved.");
-    }
-    private void LoadScore()
-    {
-        string filePath = GetFilePath();
-        string currentLevelID = GetCurrentLevelID();
-
-        if (File.Exists(filePath))
-        {
-            string json = File.ReadAllText(filePath);
-
-            gameData = JsonUtility.FromJson<GameData>(json);
             if (gameData.highestScores.ContainsKey(currentLevelID))
             {
-                Debug.Log("Highest score for level " + currentLevelID + ": " + gameData.highestScores[currentLevelID]);
+                if (totalScore > gameData.highestScores[currentLevelID])
+                {
+                    gameData.highestScores[currentLevelID] = totalScore;
+                    Debug.Log("New highest score for level " + currentLevelID + ": " + totalScore);
+                }
             }
             else
             {
-                Debug.Log("No highest score found for level " + currentLevelID);
+                gameData.highestScores[currentLevelID] = totalScore;
+                Debug.Log("Setting highest score for level " + currentLevelID + ": " + totalScore);
+            }
+
+            _uIManager.UpdateHighestScore(gameData.highestScores[currentLevelID]);
+
+            string json = JsonUtility.ToJson(gameData, true);
+            File.WriteAllText(GetFilePath(), json);
+
+            Debug.Log("Game data saved.");
+        }
+
+        private void LoadScore()
+        {
+            string filePath = GetFilePath();
+            string currentLevelID = GetCurrentLevelID();
+
+            if (File.Exists(filePath))
+            {
+                string json = File.ReadAllText(filePath);
+
+                gameData = JsonUtility.FromJson<GameData>(json);
+
+                if (gameData.highestScores.ContainsKey(currentLevelID))
+                {
+
+                    _uIManager.UpdateHighestScore(gameData.highestScores[currentLevelID]);
+                }
+                else
+                {
+                    _uIManager.UpdateHighestScore(0);  // Default to 0 
+                }
+            }
+            else
+            {
+                gameData = new GameData();
+                Debug.Log("No saved data found.");
+                _uIManager.UpdateHighestScore(0);
             }
         }
-        else
+
+        public int GetHighestScore()
         {
-            gameData = new GameData();
-            Debug.Log("No saved data found.");
+            string currentLevelID = GetCurrentLevelID();
+            if (gameData != null && gameData.highestScores.ContainsKey(currentLevelID))
+            {
+                return gameData.highestScores[currentLevelID];
+            }
+            return 0; // Return 0 if no highest score exists for this level
+        }
+
+        private string GetCurrentLevelID()
+        {
+            return "Level_1";  // Replace this with your logic for determining the current level
         }
     }
 
-    public int GetHighestScore()
+    [Serializable]
+    public class GameData
     {
-        string currentLevelID = GetCurrentLevelID();
-        if (gameData != null && gameData.highestScores.ContainsKey(currentLevelID))
-        {
-            return gameData.highestScores[currentLevelID];
-        }
-        return 0; // Return 0 if no highest score exists for this level
+        public int currentScore;
+        public Dictionary<string, int> highestScores = new Dictionary<string, int>();
     }
-
-    private string GetCurrentLevelID()
-    {
-        return "Level_1";
-    }
-}
-
-[Serializable]
-public class GameData
-{
-    public int currentScore;
-    public Dictionary<string, int> highestScores = new Dictionary<string, int>(); 
 }

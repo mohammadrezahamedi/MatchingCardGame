@@ -59,13 +59,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fe193d956eb2494b97d06b6a5df8bd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cardName: 0
+  _currentCard: 8
   _backSprite: {fileID: 21300000, guid: 936218d505c37459d97bbdbdd76e8278, type: 3}
-  _cardFace:
-  - {fileID: 21300000, guid: 42cb3eeaf7cf345b08069a520cbf51a6, type: 3}
-  - {fileID: 21300000, guid: b45d0355254e44e0da15dc2a726fcb62, type: 3}
-  - {fileID: 21300000, guid: 782cff7aa606948d5b7a825c7519af07, type: 3}
-  - {fileID: 21300000, guid: 765b7884c5669423cb2e8dcafefbb6e6, type: 3}
+  _level: {fileID: 11400000, guid: 0738d6801963a564798219835ca7767b, type: 2}
 --- !u!114 &793587593915497692
 MonoBehaviour:
   m_ObjectHideFlags: 0
